@@ -33,22 +33,16 @@ function getChildrenArray(
   parent: ParentLike | EmailDocument,
 ): Array<Section | Row | Column | Block> {
   if ((parent as EmailDocument).schemaVersion !== undefined) {
-    return (parent as EmailDocument).root as unknown as Array<
-      Section | Row | Column | Block
-    >;
+    return (parent as EmailDocument).root as unknown as Array<Section | Row | Column | Block>;
   }
-  return (parent as { children?: unknown[] }).children as Array<
-    Section | Row | Column | Block
-  >;
+  return (parent as { children?: unknown[] }).children as Array<Section | Row | Column | Block>;
 }
 
 /** A node is a container if it owns a `children` array we're allowed to splice into. */
 function isContainerParent(node: { type?: string } | undefined): boolean {
   if (!node) return false;
   return (
-    node.type === 'column' ||
-    node.type === 'block.repeater' ||
-    node.type === 'block.conditional'
+    node.type === 'column' || node.type === 'block.repeater' || node.type === 'block.conditional'
   );
 }
 

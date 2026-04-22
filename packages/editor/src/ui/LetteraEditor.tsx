@@ -4,8 +4,17 @@
   VariableDefinition,
   VariableSchema,
 } from '@lettera/core';
-import { createContext, type ReactNode, useCallback, useContext, useEffect, useMemo, useRef } from 'react';
+import {
+  createContext,
+  type ReactNode,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import { useStore } from 'zustand';
+import { usePersistence } from '../hooks/usePersistence.js';
 import {
   createEditorStore,
   type EditorStoreApi,
@@ -13,7 +22,6 @@ import {
   useEditorStore,
   useEditorStoreApi,
 } from '../store/editorStore.js';
-import { usePersistence } from '../hooks/usePersistence.js';
 import { Canvas } from './Canvas.js';
 import { CommandPalette } from './CommandPalette.js';
 import { CompactTopBar } from './CompactTopBar.js';
@@ -366,4 +374,3 @@ function PersistenceBridge({
   usePersistence({ onSave, autosaveDelay, onSaveError });
   return null;
 }
-

@@ -12,13 +12,13 @@
  * ```
  */
 
-export { usePersistence } from './usePersistence.js';
 export type {
   SaveContext,
   UsePersistenceOptions,
   UsePersistenceResult,
 } from './usePersistence.js';
-export { useVersions } from './useVersions.js';
-export type { UseVersionsOptions, UseVersionsResult, VersionEntry } from './useVersions.js';
-export { usePreview } from './usePreview.js';
+export { usePersistence } from './usePersistence.js';
 export type { PreviewResult, UsePreviewOptions } from './usePreview.js';
+export { usePreview } from './usePreview.js';
+export type { UseVersionsOptions, UseVersionsResult, VersionEntry } from './useVersions.js';
+export { useVersions } from './useVersions.js';

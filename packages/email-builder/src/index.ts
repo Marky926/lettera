@@ -25,5 +25,5 @@
  * ```
  */
 
-export * from './server.js';
 export * from './editor.js';
+export * from './server.js';

@@ -112,10 +112,7 @@ export function useVersions(options: UseVersionsOptions): UseVersionsResult {
         }
         return entry;
       } catch (err) {
-        optsRef.current.onError?.(
-          err instanceof Error ? err : new Error(String(err)),
-          'snapshot',
-        );
+        optsRef.current.onError?.(err instanceof Error ? err : new Error(String(err)), 'snapshot');
         return null;
       } finally {
         if (!unmountedRef.current) setLoading(false);
@@ -138,10 +135,7 @@ export function useVersions(options: UseVersionsOptions): UseVersionsResult {
         const next = await optsRef.current.onListVersions();
         if (!unmountedRef.current) setVersions(next);
       } catch (err) {
-        optsRef.current.onError?.(
-          err instanceof Error ? err : new Error(String(err)),
-          'restore',
-        );
+        optsRef.current.onError?.(err instanceof Error ? err : new Error(String(err)), 'restore');
       } finally {
         if (!unmountedRef.current) setLoading(false);
       }

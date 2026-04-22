@@ -139,43 +139,40 @@ export function usePersistence(options: UsePersistenceOptions): UsePersistenceRe
     }
   }, []);
 
-  const performSave = useCallback(
-    async (doc: EmailDocument): Promise<void> => {
-      // Abort any in-flight save before starting a new one. This means
-      // the host's `signal` will fire on the previous SaveContext, letting
-      // its fetch() bail out and avoiding wasted network round-trips.
-      inflightAbortRef.current?.abort();
-      const controller = new AbortController();
-      inflightAbortRef.current = controller;
+  const performSave = useCallback(async (doc: EmailDocument): Promise<void> => {
+    // Abort any in-flight save before starting a new one. This means
+    // the host's `signal` will fire on the previous SaveContext, letting
+    // its fetch() bail out and avoiding wasted network round-trips.
+    inflightAbortRef.current?.abort();
+    const controller = new AbortController();
+    inflightAbortRef.current = controller;
 
-      lastSentRef.current = doc;
-      if (!unmountedRef.current) setIsSaving(true);
-      optsRef.current.onSaveStart?.(doc);
+    lastSentRef.current = doc;
+    if (!unmountedRef.current) setIsSaving(true);
+    optsRef.current.onSaveStart?.(doc);
 
-      const promise = Promise.resolve(
-        optsRef.current.onSave(doc, { signal: controller.signal }),
-      ) as Promise<void>;
-      inflightRef.current = promise;
+    const promise = Promise.resolve(
+      optsRef.current.onSave(doc, { signal: controller.signal }),
+    ) as Promise<void>;
+    inflightRef.current = promise;
 
-      try {
-        await promise;
-        if (!controller.signal.aborted) {
-          optsRef.current.onSaveSuccess?.(doc);
-        }
-      } catch (err) {
-        if (!controller.signal.aborted) {
-          optsRef.current.onSaveError?.(err instanceof Error ? err : new Error(String(err)));
-        }
-      } finally {
-        if (inflightRef.current === promise) {
-          inflightRef.current = null;
-          inflightAbortRef.current = null;
-        }
-        if (!unmountedRef.current) setIsSaving(false);
+    try {
+      await promise;
+      if (!controller.signal.aborted) {
+        optsRef.current.onSaveSuccess?.(doc);
       }
-    },
-    [],
-  );
+    } catch (err) {
+      if (!controller.signal.aborted) {
+        optsRef.current.onSaveError?.(err instanceof Error ? err : new Error(String(err)));
+      }
+    } finally {
+      if (inflightRef.current === promise) {
+        inflightRef.current = null;
+        inflightAbortRef.current = null;
+      }
+      if (!unmountedRef.current) setIsSaving(false);
+    }
+  }, []);
 
   const flush = useCallback(async (): Promise<void> => {
     cancel();

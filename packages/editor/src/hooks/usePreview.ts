@@ -26,11 +26,6 @@
  */
 
 import type { EmailDocument, VariableContext, VariableSchema } from '@lettera/core';
-import type { LintResult } from '@lettera/sdk';
-import { useMemo } from 'react';
-import { getRegistry } from '../registry.js';
-import { useEditorStore } from '../store/editorStore.js';
-
 /**
  * Defer the import to keep `@lettera/renderer` out of the editor's
  * required dependency closure for hosts that only use the editor and
@@ -38,6 +33,10 @@ import { useEditorStore } from '../store/editorStore.js';
  * dependency for the Canvas, so this is just an organisational seam.
  */
 import { render } from '@lettera/renderer';
+import type { LintResult } from '@lettera/sdk';
+import { useMemo } from 'react';
+import { getRegistry } from '../registry.js';
+import { useEditorStore } from '../store/editorStore.js';
 
 export interface UsePreviewOptions {
   /**

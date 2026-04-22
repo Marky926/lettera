@@ -2,10 +2,10 @@
 
 import type { EmailDocument } from '@lettera/core';
 import {
+  type VersionEntry as HookVersionEntry,
+  type SaveContext,
   usePersistence,
   useVersions,
-  type SaveContext,
-  type VersionEntry as HookVersionEntry,
 } from '@lettera/editor';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
@@ -129,10 +129,9 @@ function DocPanel({
       setRestoring(true);
       try {
         persistence.cancel();
-        const restored = await api<DocumentFull>(
-          `/documents/${docId}/versions/${vid}/restore`,
-          { method: 'POST' },
-        );
+        const restored = await api<DocumentFull>(`/documents/${docId}/versions/${vid}/restore`, {
+          method: 'POST',
+        });
         qc.setQueryData(queryKeys.document(docId), restored);
         setSavedAt(restored.updatedAt);
         return restored.content as EmailDocument;
@@ -231,4 +230,3 @@ function DocPanel({
     </div>
   );
 }
-

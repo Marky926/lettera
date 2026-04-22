@@ -59,7 +59,9 @@ function flatten(doc: EmailDocument): Item[] {
           type: 'column',
           depth: 2,
         });
-        c.children.forEach((b: Block) => pushBlock(b, 3, c.id));
+        c.children.forEach((b: Block) => {
+          pushBlock(b, 3, c.id);
+        });
       });
     });
   });

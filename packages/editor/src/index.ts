@@ -7,6 +7,23 @@
  * yet — keeps the package shell standalone).
  */
 
+export type {
+  PreviewResult,
+  SaveContext,
+  UsePersistenceOptions,
+  UsePersistenceResult,
+  UsePreviewOptions,
+  UseVersionsOptions,
+  UseVersionsResult,
+  VersionEntry,
+} from './hooks/index.js';
+// Persistence / versioning / preview hooks. Re-exported for convenience;
+// also available under the `@lettera/editor/hooks` subpath for tree-shaking.
+export {
+  usePersistence,
+  usePreview,
+  useVersions,
+} from './hooks/index.js';
 export { getRegistry, setRegistry } from './registry.js';
 export type {
   EditorActions,
@@ -18,21 +35,3 @@ export type {
 export { createEditorStore, useEditorStore, useEditorStoreApi } from './store/editorStore.js';
 export type { LetteraEditorProps, LetteraLayout } from './ui/LetteraEditor.js';
 export { LetteraEditor } from './ui/LetteraEditor.js';
-
-// Persistence / versioning / preview hooks. Re-exported for convenience;
-// also available under the `@lettera/editor/hooks` subpath for tree-shaking.
-export {
-  usePersistence,
-  usePreview,
-  useVersions,
-} from './hooks/index.js';
-export type {
-  PreviewResult,
-  SaveContext,
-  UsePersistenceOptions,
-  UsePersistenceResult,
-  UsePreviewOptions,
-  UseVersionsOptions,
-  UseVersionsResult,
-  VersionEntry,
-} from './hooks/index.js';

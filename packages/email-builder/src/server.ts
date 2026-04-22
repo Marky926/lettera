@@ -23,8 +23,8 @@
  * ```
  */
 
+export * as StandardBlocks from '@lettera/blocks-standard';
+export { standardBlocks } from '@lettera/blocks-standard';
 export * from '@lettera/core';
 export * from '@lettera/renderer';
 export * from '@lettera/sdk';
-export { standardBlocks } from '@lettera/blocks-standard';
-export * as StandardBlocks from '@lettera/blocks-standard';

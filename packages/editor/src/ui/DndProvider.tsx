@@ -56,9 +56,7 @@ function resolveDrop(doc: EmailDocument, overId: string): DropResolution | null 
     const node = found.node as { type?: string; children?: unknown[] };
     // Accept columns and container blocks (repeater/conditional) as drop targets.
     const isContainer =
-      node.type === 'column' ||
-      node.type === 'block.repeater' ||
-      node.type === 'block.conditional';
+      node.type === 'column' || node.type === 'block.repeater' || node.type === 'block.conditional';
     if (!isContainer) return null;
     return { columnId: containerId, index: (node.children ?? []).length };
   }
