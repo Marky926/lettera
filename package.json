@@ -40,6 +40,12 @@
   "pnpm": {
     "overrides": {
       "fast-jwt": ">=6.2.1"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "prisma",
+      "sharp"
+    ]
   }
 }
