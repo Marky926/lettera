@@ -35,12 +35,24 @@ Out of scope:
 
 - HTML escaping + allow-listed URL schemes (`http`, `https`, `mailto`).
 - `data:` and `javascript:` URLs rejected with linter warnings.
-- CSS injection hardening via `cssEscape()` on node-id selectors.
+- CSS injection hardening via `cssEscape()` on node-id selectors,
+  `safeCssValue()` whitelist on every theme-resolved style value, and
+  `escapeAttr()` on all HTML attribute concatenation in shared helpers
+  (e.g. `tableWrap`).
+- `<a target="_blank">` automatically gets `rel="noopener noreferrer"`
+  appended in both block-level and raw-HTML sanitizers.
 - Sandboxed expression evaluator (no function calls, no property
   access on prototypes).
-- API: CSRF origin guard, rate limits on auth, `httpOnly` +
-  `sameSite=lax` session cookies, bcrypt cost factor 13, JWT in
-  cookie only.
+- Document-level numeric props (spacer height, divider thickness) are
+  schema-bounded **and** clamped at render time as defense-in-depth.
+- API: CSRF origin guard (loopback-only fail-open in non-production),
+  rate limits on auth, `httpOnly` + `sameSite=lax` session cookies,
+  bcrypt cost factor 13, JWT in cookie only.
+- Auth pipeline: `@fastify/jwt` ≥ 10 with `fast-jwt` ≥ 6.2.1 pinned via
+  pnpm `overrides` to ensure patched versions even if a transitive
+  caret range would resolve lower.
+- CLI rejects input/output paths outside the current working directory;
+  pass `--allow-outside-cwd` to override (e.g. for trusted CI scripts).
 
 See `packages/renderer/test/security.test.ts` for the security
 regression suite.

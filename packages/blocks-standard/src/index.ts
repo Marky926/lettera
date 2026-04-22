@@ -14,6 +14,7 @@ import { defineBlock, z } from '@lettera/sdk';
 import {
   defineInspector,
   isSafeUrl,
+  safeCssValue,
   safeUrl,
   sanitizeBlockHtml,
   sanitizeRawHtml,
@@ -412,8 +413,13 @@ export const SpacerBlock = defineBlock<Spacer>({
   inspector: defineInspector('Spacer', [
     { kind: 'number', path: 'props.height', label: 'Height (px)', min: 1 },
   ]),
-  exportRender: ({ node }) =>
-    `<div style="line-height:${node.props.height}px;font-size:${node.props.height}px;height:${node.props.height}px">&nbsp;</div>`,
+  exportRender: ({ node }) => {
+    // Schema validates `height` as a positive number, but bound it here too
+    // so a hand-crafted document can't ship a 9-digit value that breaks email
+    // clients. The clamp matches the schema's max bound.
+    const h = Math.max(0, Math.min(2000, Number(node.props.height) || 0));
+    return `<div style="line-height:${h}px;font-size:${h}px;height:${h}px">&nbsp;</div>`;
+  },
 });
 
 // ---------------------------------------------------------------------------
@@ -433,9 +439,13 @@ export const DividerBlock = defineBlock<Divider>({
     { kind: 'color', path: 'props.color', label: 'Color', allowToken: true },
   ]),
   exportRender: ({ node, ctx }) => {
-    const color = ctx.resolve<string>(node.props.color) ?? ctx.theme.color.text.muted;
+    // `safeCssValue` rejects anything that could break out of the inline
+    // `style="…"` declaration (quotes, semicolons, `expression(`, etc.).
+    const resolved = ctx.resolve<string>(node.props.color);
+    const color = safeCssValue(resolved) ?? safeCssValue(ctx.theme.color.text.muted) ?? '#999999';
+    const thickness = Math.max(0, Math.min(20, Number(node.props.thickness) || 1));
     return tableWrap(
-      `<div style="font-size:0;line-height:0;border-top:${node.props.thickness}px solid ${color};">&nbsp;</div>`,
+      `<div style="font-size:0;line-height:0;border-top:${thickness}px solid ${color};">&nbsp;</div>`,
       { width: '100%' },
     );
   },

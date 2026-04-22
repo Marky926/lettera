@@ -20,6 +20,13 @@ import { env } from '../env.js';
 
 const STATE_CHANGING = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
 
+function isLoopback(req: FastifyRequest): boolean {
+  const ip = req.ip;
+  if (!ip) return false;
+  // IPv4 loopback, IPv6 loopback, and IPv4-mapped IPv6 loopback.
+  return ip === '127.0.0.1' || ip === '::1' || ip === '::ffff:127.0.0.1';
+}
+
 function originAllowed(req: FastifyRequest): boolean {
   // GET/HEAD/OPTIONS are safe by definition (browsers don't include cookies
   // on non-simple cross-origin requests without preflight, and preflight is
@@ -27,9 +34,14 @@ function originAllowed(req: FastifyRequest): boolean {
   if (!STATE_CHANGING.has(req.method)) return true;
   const origin = req.headers.origin ?? req.headers.referer;
   if (!origin) {
-    // Non-browser clients (tests, curl, server-to-server) set neither; allow
-    // in development to keep DX painless, deny in production.
-    return env.NODE_ENV !== 'production';
+    // Non-browser clients (tests, curl, server-to-server) set neither.
+    // Production: deny outright — a browser-driven CSRF can also strip
+    // these headers via <form> submission, and we have no way to tell them
+    // apart from a curl request.
+    // Non-prod: allow only loopback so a dev server exposed via ngrok/LAN
+    // does not inadvertently fail-open.
+    if (env.NODE_ENV === 'production') return false;
+    return isLoopback(req);
   }
   try {
     const hostOrigin = new URL(origin).origin;

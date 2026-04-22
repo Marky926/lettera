@@ -185,4 +185,64 @@ describe('renderer / security', () => {
       expect(out.warnings.some((w) => w.code === 'html.raw')).toBe(true);
     });
   });
+
+  describe('CSS attribute breakout', () => {
+    it('drops malicious theme color tokens that could break the style attribute', () => {
+      const doc = docWith('block.heading', {
+        level: 1,
+        html: 'Hi',
+        styleRef: 'h1',
+      });
+      // Inject a styles override through the document JSON so the renderer
+      // sees a hostile string the inspector would never produce.
+      doc.root[0]!.children[0]!.children[0]!.children[0]!.styles = {
+        color: 'red; }body{display:none} /*' as never,
+      };
+      const out = render(doc, { registry: reg() });
+      // The hostile fragment must NOT appear in the output anywhere.
+      expect(out.html).not.toContain('}body{display:none}');
+      // And there must be no stray closing brace in the heading inline style.
+      expect(out.html).not.toMatch(/<h1[^>]*style="[^"]*}body\{/i);
+    });
+
+    it('drops divider color containing CSS metacharacters', () => {
+      const doc = docWith('block.divider', {
+        thickness: 1,
+        color: 'red; background:url(javascript:alert(1)) /*',
+      });
+      const out = render(doc, { registry: reg() });
+      expect(out.html).not.toMatch(/javascript:/i);
+      expect(out.html).not.toMatch(/url\(/i);
+    });
+
+    it('clamps extreme spacer height to 2000px', () => {
+      const doc = docWith('block.spacer', { height: 999_999 });
+      // Schema would now reject this but we feed it through the render path
+      // by bypassing schema in the test (using `as never`).
+      doc.root[0]!.children[0]!.children[0]!.children[0]!.props = { height: 999_999 } as never;
+      const out = render(doc, { registry: reg() });
+      expect(out.html).toMatch(/height:2000px/);
+      expect(out.html).not.toMatch(/height:999999/);
+    });
+  });
+
+  describe('Anchor tabnabbing', () => {
+    it('adds rel="noopener noreferrer" to target=_blank links in rich text', () => {
+      const doc = docWith('block.text', {
+        html: '<a href="https://example.com" target="_blank">x</a>',
+        styleRef: 'body',
+      });
+      const out = render(doc, { registry: reg() });
+      expect(out.html).toMatch(/rel="[^"]*noopener[^"]*noreferrer/);
+    });
+
+    it('preserves existing rel tokens when adding noopener/noreferrer', () => {
+      const doc = docWith('block.text', {
+        html: '<a href="https://example.com" target="_blank" rel="nofollow">x</a>',
+        styleRef: 'body',
+      });
+      const out = render(doc, { registry: reg() });
+      expect(out.html).toMatch(/rel="[^"]*nofollow[^"]*noopener[^"]*noreferrer/);
+    });
+  });
 });

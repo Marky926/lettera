@@ -151,11 +151,14 @@ export const ImageProps = z.object({
 });
 
 export const SpacerProps = z.object({
-  height: z.number().positive().default(16),
+  // Bounded to avoid a hand-crafted document shipping an absurd value that
+  // breaks Outlook / hangs preview rendering. 2000px is far above any real
+  // marketing-email use case.
+  height: z.number().positive().max(2000).default(16),
 });
 
 export const DividerProps = z.object({
-  thickness: z.number().positive().default(1),
+  thickness: z.number().positive().max(20).default(1),
   color: tokenOr(z.string()).optional(),
 });
 
