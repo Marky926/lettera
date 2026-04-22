@@ -1,0 +1,71 @@
+name: Bug report
+description: Report a defect in Lettera (editor, renderer, API, docs)
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report. Please fill out as much as
+        you can — reproductions are gold.
+
+  - type: input
+    id: version
+    attributes:
+      label: Lettera version
+      description: 'Output of `pnpm list @lettera/email-builder` or commit SHA'
+      placeholder: '0.1.0'
+    validations:
+      required: true
+
+  - type: dropdown
+    id: package
+    attributes:
+      label: Affected package
+      multiple: true
+      options:
+        - '@lettera/editor'
+        - '@lettera/renderer'
+        - '@lettera/core'
+        - '@lettera/sdk'
+        - '@lettera/blocks-standard'
+        - '@lettera/email-builder'
+        - 'apps/api'
+        - 'apps/web'
+        - 'docs'
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Reproduction
+      description: Minimal steps. Link to a CodeSandbox / repo if possible.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behaviour
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behaviour
+      description: Include the full error message and stack trace if any.
+    validations:
+      required: true
+
+  - type: input
+    id: env
+    attributes:
+      label: Environment
+      placeholder: 'Node 20.12 / pnpm 10.33 / Chrome 130 / Windows 11'
+    validations:
+      required: true

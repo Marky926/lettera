@@ -1,0 +1,40 @@
+{
+  "name": "lettera",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Lettera — next-generation visual email builder (monorepo root)",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "lint": "biome check",
+    "lint:fix": "biome check --write",
+    "format": "biome format --write",
+    "check": "biome check --write",
+    "ci": "turbo run lint typecheck test build",
+    "clean": "turbo run clean && rimraf node_modules",
+    "prepare": "simple-git-hooks || true",
+    "render:sample": "pnpm --filter @lettera/cli render -- --in fixtures/welcome.json --out fixtures/welcome.html"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm exec lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,md,css}": [
+      "biome check --write --no-errors-on-unmatched"
+    ]
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.4.12",
+    "lint-staged": "^15.5.2",
+    "rimraf": "^6.0.1",
+    "simple-git-hooks": "^2.13.1",
+    "turbo": "^2.3.3",
+    "typescript": "^5.6.3"
+  }
+}

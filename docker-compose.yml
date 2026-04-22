@@ -1,0 +1,86 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: lettera-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: lettera
+      POSTGRES_PASSWORD: lettera
+      POSTGRES_DB: lettera
+    ports:
+      - '5432:5432'
+    volumes:
+      - lettera-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U lettera -d lettera']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  adminer:
+    image: adminer:4
+    container_name: lettera-adminer
+    restart: unless-stopped
+    ports:
+      - '8080:8080'
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile.dev
+    container_name: lettera-api
+    # Pin the image to linux/amd64 even on ARM64 hosts (Windows/macOS on Apple
+    # Silicon). Prisma's query engine ships prebuilt binaries per target; an
+    # amd64 container avoids the "Could not load libquery_engine" class of
+    # errors we hit when the host's native binary leaks into the Linux image.
+    platform: linux/amd64
+    restart: unless-stopped
+    environment:
+      # Override DATABASE_URL so the container talks to the postgres service
+      # by its compose hostname instead of localhost.
+      DATABASE_URL: postgresql://lettera:lettera@postgres:5432/lettera?schema=public
+      HOST: 0.0.0.0
+      PORT: 4000
+      WEB_ORIGIN: http://localhost:3000,http://127.0.0.1:3000
+      JWT_SECRET: change-me-in-production-please
+      JWT_EXPIRES_IN: 7d
+      COOKIE_SECRET: change-me-too-please-dev
+      NODE_ENV: development
+      LOG_LEVEL: info
+    ports:
+      - '4000:4000'
+    volumes:
+      - ./:/workspace
+      # Keep node_modules inside the container (host is Windows ARM64; Linux
+      # binaries — like Prisma's query engine — must not leak out). Mount each
+      # workspace's node_modules as a named volume so `pnpm install` inside
+      # the container never writes Linux artefacts back to the Windows host.
+      - lettera-node-modules:/workspace/node_modules
+      - lettera-api-node-modules:/workspace/apps/api/node_modules
+      - lettera-web-node-modules:/workspace/apps/web/node_modules
+      - lettera-cli-node-modules:/workspace/apps/cli/node_modules
+      - lettera-playground-node-modules:/workspace/apps/playground/node_modules
+      - lettera-pkg-core-node-modules:/workspace/packages/core/node_modules
+      - lettera-pkg-sdk-node-modules:/workspace/packages/sdk/node_modules
+      - lettera-pkg-renderer-node-modules:/workspace/packages/renderer/node_modules
+      - lettera-pkg-editor-node-modules:/workspace/packages/editor/node_modules
+      - lettera-pkg-blocks-standard-node-modules:/workspace/packages/blocks-standard/node_modules
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  lettera-pgdata:
+  lettera-node-modules:
+  lettera-api-node-modules:
+  lettera-web-node-modules:
+  lettera-cli-node-modules:
+  lettera-playground-node-modules:
+  lettera-pkg-core-node-modules:
+  lettera-pkg-sdk-node-modules:
+  lettera-pkg-renderer-node-modules:
+  lettera-pkg-editor-node-modules:
+  lettera-pkg-blocks-standard-node-modules:

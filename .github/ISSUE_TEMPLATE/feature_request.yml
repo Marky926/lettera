@@ -1,0 +1,40 @@
+name: Feature request
+description: Suggest an enhancement to Lettera
+labels: [enhancement, triage]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What user problem does this solve? Who hits it and how often?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Sketch the API or UX. Code snippets welcome.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+    validations:
+      required: false
+
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Scope
+      options:
+        - 'Editor UI'
+        - 'Renderer / export'
+        - 'Document model'
+        - 'SDK / plugins'
+        - 'Reference API'
+        - 'Docs'
+    validations:
+      required: true

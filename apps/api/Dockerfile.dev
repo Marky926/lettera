@@ -1,0 +1,16 @@
+FROM node:20-bookworm-slim
+
+# Prisma needs OpenSSL at runtime for the linux engine target
+RUN apt-get update && apt-get install -y --no-install-recommends openssl ca-certificates \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN corepack enable
+
+WORKDIR /workspace
+
+# Source is mounted as a bind volume in docker-compose; node_modules lives in
+# named volumes so the host's (Windows ARM64) install doesn't poison Linux deps.
+EXPOSE 4000
+
+# Default command runs the API in dev mode with tsx watch.
+CMD ["sh", "-c", "pnpm install --frozen-lockfile && pnpm --filter @lettera/api exec prisma generate && pnpm --filter @lettera/api exec prisma migrate deploy && pnpm --filter @lettera/api dev"]

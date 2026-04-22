@@ -1,0 +1,215 @@
+{
+  "id": "doc_welcome",
+  "schemaVersion": 1,
+  "metadata": {
+    "name": "Welcome email",
+    "subject": "Welcome to Lettera",
+    "preheader": "Glad you're here. Here's what to do next."
+  },
+  "theme": {
+    "color": {
+      "brand": { "primary": "#1F6FEB" },
+      "text": { "default": "#0B1220", "muted": "#5B6478", "inverse": "#FFFFFF" },
+      "surface": { "default": "#FFFFFF", "subtle": "#F4F6FA" }
+    },
+    "spacing": { "scale": [0, 2, 4, 8, 12, 16, 24, 32, 48, 64] },
+    "radius": { "none": 0, "sm": 4, "md": 8, "lg": 16, "full": 9999 },
+    "typography": {
+      "families": {
+        "heading": ["Inter", "Helvetica", "Arial", "sans-serif"],
+        "body": ["Inter", "Helvetica", "Arial", "sans-serif"]
+      },
+      "semanticStyles": {
+        "h1": {
+          "family": "heading",
+          "size": 32,
+          "weight": 700,
+          "lineHeight": 1.2,
+          "letterSpacing": -0.2
+        },
+        "h2": {
+          "family": "heading",
+          "size": 24,
+          "weight": 700,
+          "lineHeight": 1.3,
+          "letterSpacing": 0
+        },
+        "h3": {
+          "family": "heading",
+          "size": 20,
+          "weight": 600,
+          "lineHeight": 1.35,
+          "letterSpacing": 0
+        },
+        "body": {
+          "family": "body",
+          "size": 16,
+          "weight": 400,
+          "lineHeight": 1.5,
+          "letterSpacing": 0
+        },
+        "lead": {
+          "family": "body",
+          "size": 18,
+          "weight": 400,
+          "lineHeight": 1.55,
+          "letterSpacing": 0
+        },
+        "caption": {
+          "family": "body",
+          "size": 12,
+          "weight": 400,
+          "lineHeight": 1.4,
+          "letterSpacing": 0,
+          "color": { "$token": "color.text.muted" }
+        }
+      }
+    }
+  },
+  "root": [
+    {
+      "id": "sec_hero",
+      "type": "section",
+      "props": { "contentWidth": 600, "fullWidthBackground": false },
+      "styles": {
+        "padding": { "top": 32, "right": 24, "bottom": 32, "left": 24 },
+        "background": { "color": { "$token": "color.surface.default" } }
+      },
+      "children": [
+        {
+          "id": "row_1",
+          "type": "row",
+          "props": { "stackReverse": false },
+          "children": [
+            {
+              "id": "col_1",
+              "type": "column",
+              "props": { "width": "1/1", "verticalAlign": "top" },
+              "children": [
+                {
+                  "id": "blk_h1",
+                  "type": "block.heading",
+                  "props": { "level": 1, "html": "Welcome to Lettera", "styleRef": "h1" },
+                  "styles": { "align": "center" }
+                },
+                { "id": "blk_sp1", "type": "block.spacer", "props": { "height": 12 } },
+                {
+                  "id": "blk_lead",
+                  "type": "block.text",
+                  "props": {
+                    "html": "<p>Lettera is a next-gen email builder that puts typography, design tokens, and developer ergonomics first.</p>",
+                    "styleRef": "lead"
+                  },
+                  "styles": { "align": "center", "color": { "$token": "color.text.muted" } }
+                },
+                { "id": "blk_sp2", "type": "block.spacer", "props": { "height": 24 } },
+                {
+                  "id": "blk_cta",
+                  "type": "block.button",
+                  "props": {
+                    "label": "Get started",
+                    "href": "https://example.com/start",
+                    "preset": "primary",
+                    "fullWidth": false
+                  },
+                  "styles": {
+                    "padding": { "top": 12, "right": 20, "bottom": 12, "left": 20 },
+                    "border": { "radius": { "$token": "radius.md" } }
+                  },
+                  "responsive": {
+                    "mobile": {
+                      "styles": { "padding": { "top": 14, "right": 24, "bottom": 14, "left": 24 } }
+                    }
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sec_features",
+      "type": "section",
+      "props": { "contentWidth": 600, "fullWidthBackground": false },
+      "styles": {
+        "padding": { "top": 24, "right": 24, "bottom": 24, "left": 24 },
+        "background": { "color": { "$token": "color.surface.subtle" } }
+      },
+      "children": [
+        {
+          "id": "row_2",
+          "type": "row",
+          "props": { "stackReverse": false },
+          "children": [
+            {
+              "id": "col_a",
+              "type": "column",
+              "props": { "width": "1/2", "verticalAlign": "top" },
+              "children": [
+                {
+                  "id": "blk_h2a",
+                  "type": "block.heading",
+                  "props": { "level": 2, "html": "Design tokens", "styleRef": "h3" }
+                },
+                {
+                  "id": "blk_ta",
+                  "type": "block.text",
+                  "props": {
+                    "html": "<p>Brand once. Apply everywhere. Rename safely.</p>",
+                    "styleRef": "body"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "col_b",
+              "type": "column",
+              "props": { "width": "1/2", "verticalAlign": "top" },
+              "children": [
+                {
+                  "id": "blk_h2b",
+                  "type": "block.heading",
+                  "props": { "level": 2, "html": "Typography first", "styleRef": "h3" }
+                },
+                {
+                  "id": "blk_tb",
+                  "type": "block.text",
+                  "props": {
+                    "html": "<p>Semantic styles that cascade, with per-breakpoint overrides.</p>",
+                    "styleRef": "body"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "row_3",
+          "type": "row",
+          "props": { "stackReverse": false },
+          "children": [
+            {
+              "id": "col_c",
+              "type": "column",
+              "props": { "width": "1/1", "verticalAlign": "top" },
+              "children": [
+                { "id": "blk_div", "type": "block.divider", "props": { "thickness": 1 } },
+                {
+                  "id": "blk_caption",
+                  "type": "block.text",
+                  "props": {
+                    "html": "<p>You're receiving this because you signed up. <a href=\"https://example.com/unsubscribe\">Unsubscribe</a>.</p>",
+                    "styleRef": "caption"
+                  },
+                  "styles": { "align": "center" }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "components": []
+}

@@ -1,0 +1,13 @@
+Glad you're here. Here's what to do next.
+
+Welcome to Lettera
+Lettera is a next-gen email builder that puts typography, design tokens, and developer ergonomics first.
+Get started → https://example.com/start
+
+Design tokens
+Brand once. Apply everywhere. Rename safely.
+Typography first
+Semantic styles that cascade, with per-breakpoint overrides.
+
+---
+You're receiving this because you signed up. Unsubscribe.

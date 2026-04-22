@@ -1,0 +1,25 @@
+{
+  "name": "@lettera/cli",
+  "version": "0.0.1",
+  "type": "module",
+  "private": true,
+  "bin": {
+    "lettera": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "render": "node ./dist/cli.js render",
+    "clean": "rimraf dist .turbo"
+  },
+  "dependencies": {
+    "@lettera/blocks-standard": "workspace:*",
+    "@lettera/core": "workspace:*",
+    "@lettera/renderer": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.6.3"
+  }
+}

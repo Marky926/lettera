@@ -1,0 +1,44 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 10
+    groups:
+      typescript:
+        patterns:
+          - typescript
+          - "@types/*"
+      react:
+        patterns:
+          - react
+          - react-dom
+          - "@types/react*"
+      next:
+        patterns:
+          - next
+          - "@next/*"
+      fastify:
+        patterns:
+          - fastify
+          - "@fastify/*"
+      tiptap:
+        patterns:
+          - "@tiptap/*"
+      dnd-kit:
+        patterns:
+          - "@dnd-kit/*"
+      vitest:
+        patterns:
+          - vitest
+          - "@vitest/*"
+      biome:
+        patterns:
+          - "@biomejs/*"
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly

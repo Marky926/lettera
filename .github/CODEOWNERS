@@ -1,0 +1,10 @@
+# Default owner for everything
+*                           @Marky926
+
+# Critical surfaces — require owner review
+/packages/core/             @Marky926
+/packages/sdk/              @Marky926
+/packages/renderer/         @Marky926
+/apps/api/                  @Marky926
+/.github/                   @Marky926
+/SECURITY.md                @Marky926

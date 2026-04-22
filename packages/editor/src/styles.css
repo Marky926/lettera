@@ -1,0 +1,1091 @@
+.lettera-editor {
+  display: grid;
+  grid-template-columns: var(--lettera-left-w, 280px) 6px 1fr 6px var(--lettera-right-w, 320px);
+  grid-template-rows: 48px 1fr 160px;
+  height: 100vh;
+  width: 100%;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-size: 13px;
+  color: #1f2328;
+  background: #f4f6fa;
+  overflow: hidden;
+}
+
+.lettera-editor__topbar {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  background: #ffffff;
+  border-bottom: 1px solid #e3e7ee;
+}
+
+.lettera-editor__topbar h1 {
+  margin: 0 16px 0 0;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.lettera-editor__btn {
+  appearance: none;
+  border: 1px solid #d6dbe3;
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  cursor: pointer;
+  color: #1f2328;
+}
+
+.lettera-editor__btn:hover:not(:disabled) {
+  background: #f0f3f8;
+}
+
+.lettera-editor__btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.lettera-editor__btn--primary {
+  background: #1f6feb;
+  color: #fff;
+  border-color: #1f6feb;
+}
+
+.lettera-editor__btn--primary:hover:not(:disabled) {
+  background: #1858bb;
+}
+
+.lettera-editor__btn--toggle[aria-pressed="true"] {
+  background: #1f6feb;
+  color: #fff;
+  border-color: #1f6feb;
+}
+
+.lettera-editor__spacer {
+  flex: 1;
+}
+
+.lettera-editor__sidebar {
+  background: #ffffff;
+  border-right: 1px solid #e3e7ee;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.lettera-editor__sidebar--right {
+  border-right: none;
+  border-left: 1px solid #e3e7ee;
+}
+
+.lettera-editor__panel {
+  padding: 12px;
+  border-bottom: 1px solid #eef1f6;
+}
+
+.lettera-editor__panel h2 {
+  margin: 0 0 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.lettera-editor__palette {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.lettera-editor__palette button {
+  text-align: left;
+  padding: 8px;
+  border: 1px solid #e3e7ee;
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.lettera-editor__palette button:hover {
+  background: #f0f3f8;
+  border-color: #c4cdd9;
+}
+
+.lettera-editor__layers ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.lettera-editor__layers li {
+  padding: 4px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lettera-editor__layers li:hover {
+  background: #f0f3f8;
+}
+
+.lettera-editor__layers li[aria-selected="true"] {
+  background: #dbe7ff;
+  color: #0a2c66;
+}
+
+.lettera-editor__layers .indent {
+  display: inline-block;
+  width: 12px;
+}
+
+.lettera-editor__layers .badge {
+  font-size: 10px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.lettera-editor__canvas {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  overflow: auto;
+  padding: 24px;
+}
+
+.lettera-editor__canvas iframe {
+  border: 1px solid #e3e7ee;
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  width: 640px;
+  height: 100%;
+  min-height: 800px;
+  transition: width 120ms ease;
+}
+
+.lettera-editor__canvas--mobile iframe {
+  width: 380px;
+}
+
+.lettera-editor__inspector .field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+.lettera-editor__inspector label {
+  font-size: 11px;
+  color: #4b5563;
+  font-weight: 500;
+}
+
+.lettera-editor__inspector input[type="text"],
+.lettera-editor__inspector input[type="number"],
+.lettera-editor__inspector input[type="url"],
+.lettera-editor__inspector textarea,
+.lettera-editor__inspector select {
+  width: 100%;
+  font: inherit;
+  padding: 6px 8px;
+  border: 1px solid #d6dbe3;
+  border-radius: 6px;
+  background: #fff;
+  color: inherit;
+  box-sizing: border-box;
+}
+
+.lettera-editor__inspector textarea {
+  min-height: 70px;
+  resize: vertical;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 12px;
+}
+
+.lettera-editor__inspector input[type="color"] {
+  width: 100%;
+  height: 32px;
+  padding: 2px;
+  border: 1px solid #d6dbe3;
+  border-radius: 6px;
+  background: #fff;
+}
+
+.lettera-editor__inspector .group-title {
+  margin: 16px 0 8px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #6b7280;
+  font-weight: 600;
+}
+
+.lettera-editor__inspector .empty {
+  color: #6b7280;
+  font-size: 12px;
+  padding: 12px;
+  text-align: center;
+}
+
+/* Rich text editor (Tiptap) */
+.lettera-rte-wrap {
+  border: 1px solid #d6dbe3;
+  border-radius: 6px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.lettera-rte-toolbar {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  border-bottom: 1px solid #eef1f6;
+  background: #fafbfd;
+  align-items: center;
+}
+
+.lettera-rte-toolbar button {
+  appearance: none;
+  border: 1px solid transparent;
+  background: transparent;
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 12px;
+  color: #1f2328;
+}
+
+.lettera-rte-toolbar button:hover {
+  background: #eef1f6;
+}
+
+.lettera-rte-toolbar button[aria-pressed="true"] {
+  background: #dbe7ff;
+  border-color: #b9cffb;
+  color: #0a2c66;
+}
+
+.lettera-rte-toolbar select {
+  margin-left: auto;
+  font-size: 11px;
+  padding: 2px 4px;
+  border: 1px solid #d6dbe3;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.lettera-rte {
+  min-height: 80px;
+  padding: 8px 10px;
+  outline: none;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.lettera-rte p {
+  margin: 0 0 6px;
+}
+
+.lettera-rte:focus-visible {
+  outline: 2px solid #1f6feb;
+  outline-offset: -2px;
+}
+
+/* Variable chip in Tiptap */
+.lettera-var-chip {
+  display: inline-block;
+  padding: 1px 6px;
+  margin: 0 1px;
+  border-radius: 10px;
+  background: #e7efff;
+  color: #0a2c66;
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid #b9cffb;
+  cursor: default;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Variables panel pills */
+.lettera-var-pill {
+  appearance: none;
+  border: 1px solid #b9cffb;
+  background: #e7efff;
+  color: #0a2c66;
+  border-radius: 10px;
+  padding: 2px 8px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.lettera-var-pill:hover {
+  background: #d4e2ff;
+}
+
+/* Variables tree (typed schema mode) */
+.lettera-var-tree {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  /* Match editor base font (13px) so this tab feels identical to Layers / Inspector. */
+  font: inherit;
+  font-size: 13px;
+  color: #1f2937;
+}
+.lettera-var-tree ul {
+  list-style: none;
+  margin: 0;
+  /* Subtle indent guide for nested groups. */
+  padding: 0 0 0 8px;
+  border-left: 1px dashed #e3e7ee;
+  margin-left: 10px;
+}
+.lettera-var-tree__row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 5px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  line-height: 1.3;
+  transition:
+    background-color 100ms ease,
+    color 100ms ease;
+}
+.lettera-var-tree__row:hover {
+  background: #eef2f8;
+  color: #0f172a;
+}
+.lettera-var-tree__row:focus-visible {
+  outline: 2px solid #1f6feb;
+  outline-offset: -2px;
+}
+.lettera-var-tree__row--branch {
+  color: #111827;
+  font-weight: 600;
+}
+.lettera-var-tree__toggle {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  color: #6b7280;
+  font-size: 10px;
+  width: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.lettera-var-tree__row--branch > [aria-hidden] {
+  color: #6b7280;
+  font-size: 10px;
+  width: 12px;
+  display: inline-flex;
+  justify-content: center;
+}
+.lettera-var-tree__label {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Type badges. Color-coded per scalar kind so authors can scan the tree. */
+.lettera-var-tree__badge {
+  font:
+    600 10px / 1 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+  padding: 2px 6px;
+  border-radius: 999px;
+  min-width: 18px;
+  text-align: center;
+  background: #eef2f8;
+  color: #475569;
+  border: 1px solid transparent;
+  letter-spacing: 0.02em;
+  flex: none;
+}
+.lettera-var-tree__badge[data-kind="currency"] {
+  background: #ecfdf5;
+  color: #047857;
+  border-color: #a7f3d0;
+}
+.lettera-var-tree__badge[data-kind="number"] {
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-color: #bfdbfe;
+}
+.lettera-var-tree__badge[data-kind="date"],
+.lettera-var-tree__badge[data-kind="datetime"] {
+  background: #faf5ff;
+  color: #6b21a8;
+  border-color: #e9d5ff;
+}
+.lettera-var-tree__badge[data-kind="boolean"] {
+  background: #fffbeb;
+  color: #92400e;
+  border-color: #fde68a;
+}
+.lettera-var-tree__badge[data-kind="email"],
+.lettera-var-tree__badge[data-kind="url"] {
+  background: #f0f9ff;
+  color: #075985;
+  border-color: #bae6fd;
+}
+.lettera-var-tree__badge[data-kind="list"] {
+  background: #f1f5f9;
+  color: #0f172a;
+  border-color: #cbd5e1;
+}
+.lettera-var-tree__badge[data-kind="object"] {
+  background: transparent;
+  color: #64748b;
+  border-color: #e2e8f0;
+}
+
+.lettera-var-tree__action {
+  appearance: none;
+  background: #1f6feb;
+  border: 1px solid #1f6feb;
+  color: #fff;
+  font: 500 11px / 1 inherit;
+  border-radius: 999px;
+  padding: 3px 8px;
+  cursor: pointer;
+  flex: none;
+  opacity: 0;
+  transition:
+    opacity 100ms ease,
+    background-color 100ms ease;
+}
+.lettera-var-tree__row--branch:hover .lettera-var-tree__action,
+.lettera-var-tree__row--branch:focus-within .lettera-var-tree__action {
+  opacity: 1;
+}
+.lettera-var-tree__action:hover {
+  background: #1858c4;
+  border-color: #1858c4;
+}
+.lettera-var-tree__action:focus-visible {
+  outline: 2px solid #1f6feb;
+  outline-offset: 2px;
+  opacity: 1;
+}
+
+/* DnD overlay shown while dragging a palette item or layer block */
+.lettera-drag-overlay {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: #1f6feb;
+  color: white;
+  font:
+    500 12px / 1 system-ui,
+    sans-serif;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.25);
+  pointer-events: none;
+}
+
+/* Canvas drop overlay (sits on top of the iframe) */
+.lettera-editor__canvas-stage {
+  position: relative;
+  display: inline-block;
+  vertical-align: top;
+}
+.lettera-editor__drop-overlay {
+  position: absolute;
+  inset: 0;
+}
+
+/* Linter panel — bottom row spanning full width */
+.lettera-editor__linter {
+  grid-column: 1 / -1;
+  border-top: 1px solid #e3e7ee;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+}
+.lettera-editor__linter > header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  border-bottom: 1px solid #eef0f4;
+  background: #fafbfc;
+}
+.lettera-editor__linter-count {
+  background: #eef0f4;
+  border-radius: 999px;
+  padding: 1px 8px;
+  font-size: 11px;
+  color: #4b5563;
+}
+.lettera-editor__linter-empty {
+  margin: 0;
+  padding: 12px;
+  color: #6b7280;
+  font-size: 12px;
+}
+.lettera-editor__linter ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  flex: 1;
+}
+.lettera-editor__linter li {
+  border-bottom: 1px solid #f3f4f6;
+}
+.lettera-editor__linter li button.lettera-editor__linter-row {
+  display: grid;
+  grid-template-columns: 80px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  padding: 8px 12px;
+  cursor: pointer;
+  font: inherit;
+}
+.lettera-editor__linter li button.lettera-editor__linter-row:hover {
+  background: #f6f8fb;
+}
+.lettera-editor__linter-fixes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 0 12px 8px 100px;
+}
+.lettera-editor__linter-sev {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 4px;
+  text-align: center;
+}
+.lettera-editor__linter-sev.sev-info {
+  background: #e0f2fe;
+  color: #075985;
+}
+.lettera-editor__linter-sev.sev-warn {
+  background: #fef3c7;
+  color: #92400e;
+}
+.lettera-editor__linter-sev.sev-error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+.lettera-editor__linter-msg {
+  font-size: 12px;
+  color: #1f2937;
+}
+.lettera-editor__linter-code {
+  font:
+    11px ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+  color: #6b7280;
+}
+
+/* Command palette */
+.lettera-cmdk-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.35);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 12vh;
+  z-index: 1000;
+}
+.lettera-cmdk {
+  width: min(560px, 90vw);
+  background: #ffffff;
+  border: 1px solid #e3e7ee;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(15, 23, 42, 0.25);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  max-height: 60vh;
+}
+.lettera-cmdk [cmdk-input] {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #eef0f4;
+  padding: 14px 16px;
+  font: 14px inherit;
+  outline: none;
+}
+.lettera-cmdk [cmdk-list] {
+  overflow: auto;
+  padding: 6px;
+}
+.lettera-cmdk [cmdk-group-heading] {
+  padding: 8px 10px 4px;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6b7280;
+}
+.lettera-cmdk [cmdk-item] {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+.lettera-cmdk [cmdk-item][data-selected="true"] {
+  background: #eef2ff;
+  color: #1e3a8a;
+}
+.lettera-cmdk [cmdk-empty] {
+  padding: 16px;
+  color: #6b7280;
+  font-size: 12px;
+  text-align: center;
+}
+.lettera-cmdk-hint {
+  margin-left: auto;
+  font:
+    11px ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    Consolas,
+    monospace;
+  color: #9ca3af;
+}
+
+/* ---------------------------------------------------------------------------
+ * Layout panel � row presets glyph
+ * ------------------------------------------------------------------------- */
+.lettera-editor__layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+.lettera-editor__layout button {
+  text-align: left;
+  padding: 8px;
+  border: 1px solid #e3e7ee;
+  background: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.lettera-editor__layout button:hover {
+  background: #f0f3f8;
+  border-color: #c4cdd9;
+}
+.lettera-editor__layout .lettera-editor__layout-section {
+  grid-column: 1 / -1;
+}
+.lettera-row-glyph {
+  display: flex;
+  gap: 2px;
+  height: 8px;
+  margin-bottom: 6px;
+  width: 100%;
+}
+.lettera-row-glyph__cell {
+  background: #c4cdd9;
+  border-radius: 2px;
+  min-width: 0;
+}
+
+/* In the compact right-panel tile (column flexbox with align-items:center)
+   a flex item without an intrinsic width collapses to its content width,
+   which would render the row-preset glyph as a 0-wide sliver. Force the
+   glyph to span the tile width so it looks identical to the classic
+   Palette buttons (which are block-level and stretch automatically). */
+.lettera-right-panel__tile .lettera-row-glyph {
+  align-self: stretch;
+}
+
+/* ---------------------------------------------------------------------------
+ * Inspector primitives
+ * ------------------------------------------------------------------------- */
+.lettera-color-input {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.lettera-color-input input[type="color"] {
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  padding: 2px;
+  border: 1px solid #d6dbe3;
+  border-radius: 6px;
+  background: #fff;
+  cursor: pointer;
+}
+.lettera-color-input input[type="text"] {
+  flex: 1;
+  min-width: 0;
+}
+.lettera-color-input button {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  line-height: 1;
+  font-size: 14px;
+}
+
+.lettera-spacing-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 4px;
+}
+.lettera-spacing-grid input {
+  text-align: center;
+}
+
+.lettera-segmented {
+  display: flex;
+  gap: 0;
+  border: 1px solid #d6dbe3;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.lettera-segmented button {
+  flex: 1;
+  border: 0;
+  border-right: 1px solid #d6dbe3;
+  padding: 6px 8px;
+  background: #fff;
+  cursor: pointer;
+  font: inherit;
+  text-transform: capitalize;
+}
+.lettera-segmented button:last-child {
+  border-right: 0;
+}
+.lettera-segmented button[aria-pressed="true"] {
+  background: #1f6feb;
+  color: #fff;
+}
+
+.lettera-editor__tabs {
+  display: flex;
+  gap: 2px;
+  border-bottom: 1px solid #e3e7ee;
+  margin: 0 0 12px;
+}
+.lettera-editor__tabs button {
+  border: 0;
+  background: transparent;
+  padding: 6px 10px;
+  font: inherit;
+  font-size: 12px;
+  color: #4b5563;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.lettera-editor__tabs button:hover {
+  color: #1f2328;
+}
+.lettera-editor__tabs button[aria-selected="true"] {
+  color: #1f6feb;
+  border-bottom-color: #1f6feb;
+}
+
+.lettera-mobile-banner {
+  background: #fef3c7;
+  color: #92400e;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  margin-top: 12px;
+  border: 1px solid #fde68a;
+}
+
+.lettera-checkbox-field {
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+.lettera-checkbox-field input[type="checkbox"] {
+  width: auto !important;
+  margin: 0;
+}
+.lettera-checkbox-field label {
+  margin: 0;
+}
+
+.lettera-inspector-actions {
+  display: flex;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.lettera-editor__btn--danger {
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+.lettera-editor__btn--danger:hover:not(:disabled) {
+  background: #fee2e2;
+}
+
+/* ---------------------------------------------------------------------------
+ * Resizable panel splitters
+ * ------------------------------------------------------------------------- */
+.lettera-splitter {
+  background: transparent;
+  cursor: col-resize;
+  transition: background 80ms ease;
+  user-select: none;
+  touch-action: none;
+}
+.lettera-splitter:hover,
+.lettera-splitter[data-dragging="true"] {
+  background: #1f6feb;
+}
+
+/* ---------------------------------------------------------------------------
+ * Compact (Unlayer-style) layout
+ *
+ * Used by hosts that embed the editor inside a CRM/SaaS modal. Two-column
+ * grid: canvas + a single right tabbed panel with an icon rail on its
+ * outer edge. No left sidebar, no bottom linter strip, no resizable
+ * splitters — width is fixed for predictability inside dialogs.
+ * ------------------------------------------------------------------------- */
+.lettera-editor--compact {
+  grid-template-columns: 1fr var(--lettera-right-w, 340px);
+  grid-template-rows: 44px 1fr;
+}
+
+.lettera-editor--compact .lettera-editor__topbar {
+  grid-column: 1 / -1;
+  height: 44px;
+  padding: 0 16px;
+}
+
+.lettera-editor--compact .lettera-editor__topbar h1 {
+  font-size: 13px;
+  font-weight: 500;
+  color: #4b5563;
+}
+
+.lettera-editor--compact .lettera-editor__canvas {
+  grid-column: 1;
+  grid-row: 2;
+  background: #f4f6fa;
+}
+
+.lettera-editor--compact .lettera-editor__sidebar--compact {
+  grid-column: 2;
+  grid-row: 2;
+  border-left: 1px solid #e3e7ee;
+  background: #ffffff;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  padding: 0;
+}
+
+.lettera-compact-device {
+  display: inline-flex;
+  gap: 0;
+  border: 1px solid #d6dbe3;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.lettera-compact-device .lettera-editor__btn {
+  border: 0;
+  border-radius: 0;
+  padding: 4px 12px;
+}
+.lettera-compact-device .lettera-editor__btn + .lettera-editor__btn {
+  border-left: 1px solid #d6dbe3;
+}
+
+/* Compact right panel: tab content on the left, vertical icon rail on the
+   right, matching the Unlayer-style screenshot the user referenced. */
+.lettera-right-panel {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+}
+.lettera-right-panel__main {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.lettera-right-panel__rail {
+  flex: 0 0 64px;
+  border-left: 1px solid #e3e7ee;
+  background: #fafbfd;
+  display: flex;
+  flex-direction: column;
+  padding: 6px 0;
+  gap: 2px;
+}
+.lettera-right-panel__rail-btn {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 8px 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  font: inherit;
+  font-size: 10px;
+  color: #4b5563;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+  border-radius: 0;
+  margin: 0 0 0 -1px;
+}
+.lettera-right-panel__rail-btn:hover {
+  background: #eef2f7;
+  color: #1f2328;
+}
+.lettera-right-panel__rail-btn[aria-selected="true"] {
+  background: #ffffff;
+  color: #1f6feb;
+  border-left-color: #1f6feb;
+}
+.lettera-right-panel__rail-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+.lettera-right-panel__rail-label {
+  font-size: 10px;
+  letter-spacing: 0.02em;
+}
+
+.lettera-right-panel__tab-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* Tile grid for the Content / Blocks tabs — mirrors the screenshot's
+   2-column tile layout with icon-on-top, label-below cards. */
+.lettera-right-panel__tiles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.lettera-right-panel__tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-height: 72px;
+  padding: 12px 8px;
+  border: 1px solid #e3e7ee;
+  background: #ffffff;
+  border-radius: 8px;
+  cursor: grab;
+  font-size: 12px;
+  color: #1f2328;
+  text-align: center;
+}
+.lettera-right-panel__tile:hover {
+  background: #f6f8fb;
+  border-color: #c4cdd9;
+}
+.lettera-right-panel__tile:active {
+  cursor: grabbing;
+}
+/* Click-only variant (e.g. row-layout presets) — signal clickability,
+   not draggability, so users know a single click applies the layout. */
+.lettera-right-panel__tile--clickable {
+  cursor: pointer;
+}
+.lettera-right-panel__tile--clickable:active {
+  cursor: pointer;
+}
+.lettera-right-panel__tile-icon {
+  font-size: 20px;
+  line-height: 1;
+  color: #4b5563;
+}
+.lettera-right-panel__tile-label {
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.lettera-right-panel__inspector {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+.lettera-right-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-bottom: 1px solid #e3e7ee;
+  background: #fafbfd;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1f2328;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.lettera-right-panel__close {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  font-size: 16px;
+  line-height: 1;
+  color: #6b7280;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.lettera-right-panel__close:hover {
+  background: #eef2f7;
+  color: #1f2328;
+}
+.lettera-right-panel__inspector-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}

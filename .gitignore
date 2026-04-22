@@ -1,0 +1,14 @@
+node_modules
+.pnpm-store
+dist
+.turbo
+*.log
+.DS_Store
+coverage
+.next
+.vite
+.cache
+.env
+.env.*
+!.env.example
+fixtures/*.html
