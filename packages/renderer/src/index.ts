@@ -262,8 +262,17 @@ function renderRow(
         .map((b) => renderBlock(b, ctx, opts, rules))
         .filter(Boolean)
         .join('\n');
+      // In preview mode, render an explicit placeholder for empty
+      // columns so the row keeps a tangible height (otherwise the
+      // section appears to "collapse" the moment a layout is picked
+      // and no blocks have been added yet) and gives a clear drop
+      // target. Export mode emits the empty cell verbatim.
+      const cellContent =
+        col.children.length === 0 && opts.mode === 'preview'
+          ? `<div data-lettera-empty="column" style="min-height:64px;display:flex;align-items:center;justify-content:center;border:1px dashed #c4cdd9;border-radius:6px;color:#6b7280;font:12px system-ui,-apple-system,sans-serif;padding:12px;text-align:center;">Empty column</div>`
+          : blocks;
       return `<td class="${stackClass}" valign="${valign}" width="${width}%" data-lettera-id="${escapeHtml(col.id)}" style="width:${width}%;vertical-align:${valign};${col.hidden?.mobile ? 'mso-hide:none;' : ''}">
-        ${blocks}
+        ${cellContent}
       </td>`;
     })
     .join('\n');

@@ -79,8 +79,18 @@ export function usePaletteActions(): PaletteActions {
       const sectionId = pickSectionId(state.doc, state.selection?.id ?? null);
       if (!sectionId) return;
       dispatch('doc/insertRow', { sectionId, columns });
+      // Auto-select the first column of the newly inserted row so the
+      // section stays anchored visually (the empty-section placeholder
+      // is replaced by an empty row, and its columns now render their
+      // own placeholders) and the user has an obvious drop target.
+      const after = storeApi.getState().doc;
+      const section = after.root.find((s) => s.id === sectionId);
+      if (!section) return;
+      const newRow = section.children[section.children.length - 1];
+      const firstCol = newRow?.children[0];
+      if (firstCol) select({ id: firstCol.id, type: 'column' });
     },
-    [dispatch, storeApi],
+    [dispatch, select, storeApi],
   );
 
   const insertSection = useCallback(() => {
