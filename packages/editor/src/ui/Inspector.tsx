@@ -818,18 +818,28 @@ function renderInput(
           onChange={(e) => onChange(e.target.value)}
         />
       );
-    case 'number':
+    case 'number': {
+      const num = value as number | undefined;
       return (
         <input
           id={id}
           type="number"
-          value={Number((value as number | undefined) ?? 0)}
+          value={typeof num === 'number' ? num : ''}
+          placeholder={control.placeholder ?? (control.nullable ? 'Auto' : undefined)}
           min={control.min}
           max={control.max}
           step={control.step ?? 1}
-          onChange={(e) => onChange(Number(e.target.value))}
+          onChange={(e) => {
+            const raw = e.target.value;
+            if (control.nullable && raw === '') {
+              onChange(undefined);
+              return;
+            }
+            onChange(Number(raw));
+          }}
         />
       );
+    }
     case 'boolean':
       return (
         <input
@@ -840,13 +850,17 @@ function renderInput(
         />
       );
     case 'select': {
-      const cur = String(value ?? '');
+      const cur = value === undefined || value === null ? '' : String(value);
       return (
         <select
           id={id}
           value={cur}
           onChange={(e) => {
             const raw = e.target.value;
+            if (control.nullable && raw === '') {
+              onChange(undefined);
+              return;
+            }
             const num = Number(raw);
             onChange(Number.isFinite(num) && raw.trim() !== '' && String(num) === raw ? num : raw);
           }}

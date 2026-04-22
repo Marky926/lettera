@@ -104,6 +104,31 @@ export function semanticTextStyleCss(ctx: RenderContext, styleRef: string): stri
   return parts.join(';');
 }
 
+/**
+ * Inline typography overrides shared by Heading / Text / Button. Each field
+ * is optional; only the provided ones are emitted, and they are intended to
+ * be appended **after** any preset CSS so they win the CSS cascade.
+ */
+export interface TypographyOverrides {
+  fontSize?: number;
+  lineHeight?: number;
+  letterSpacing?: number;
+  textTransform?: 'none' | 'uppercase' | 'lowercase' | 'capitalize';
+  fontWeight?: number;
+}
+
+export function typographyOverridesCss(o: TypographyOverrides | undefined): string {
+  if (!o) return '';
+  const parts: string[] = [];
+  if (typeof o.fontSize === 'number' && o.fontSize > 0) parts.push(`font-size:${o.fontSize}px`);
+  if (typeof o.lineHeight === 'number' && o.lineHeight > 0)
+    parts.push(`line-height:${o.lineHeight}`);
+  if (typeof o.letterSpacing === 'number') parts.push(`letter-spacing:${o.letterSpacing}px`);
+  if (o.textTransform) parts.push(`text-transform:${o.textTransform}`);
+  if (typeof o.fontWeight === 'number') parts.push(`font-weight:${o.fontWeight}`);
+  return parts.join(';');
+}
+
 /** Wrap a fragment in a single-cell table — the email-safe div equivalent. */
 export function tableWrap(
   inner: string,

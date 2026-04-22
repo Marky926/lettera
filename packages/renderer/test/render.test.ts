@@ -112,4 +112,60 @@ describe('renderer', () => {
     });
     expect(mailchimp.html).toContain('Hello *|USER_FIRSTNAME|*!');
   });
+
+  it('applies typography overrides on heading / text / button', () => {
+    const doc: EmailDocument = createEmptyDocument('Typo');
+    const col = doc.root[0]!.children[0]!.children[0]!;
+    col.children = [
+      {
+        id: 'h',
+        type: 'block.heading',
+        props: {
+          level: 1,
+          html: 'Big',
+          styleRef: 'h1',
+          fontSize: 48,
+          lineHeight: 1.1,
+          letterSpacing: -1,
+          textTransform: 'uppercase',
+        },
+      },
+      {
+        id: 't',
+        type: 'block.text',
+        props: {
+          html: '<p>Body</p>',
+          styleRef: 'body',
+          fontSize: 18,
+          letterSpacing: 0.5,
+        },
+      },
+      {
+        id: 'b',
+        type: 'block.button',
+        props: {
+          label: 'Go',
+          href: 'https://example.com',
+          preset: 'primary',
+          fullWidth: false,
+          fontSize: 20,
+          fontWeight: 800,
+          letterSpacing: 1,
+          textTransform: 'uppercase',
+        },
+      },
+    ];
+    const out = render(doc, { registry: reg() });
+    // heading overrides emitted
+    expect(out.html).toMatch(
+      /<h1[^>]*style="[^"]*font-size:48px[^"]*line-height:1\.1[^"]*letter-spacing:-1px[^"]*text-transform:uppercase/,
+    );
+    // text overrides emitted
+    expect(out.html).toMatch(/<div[^>]*style="[^"]*font-size:18px[^"]*letter-spacing:0\.5px/);
+    // button overrides — both VML and <a> get the font size / weight
+    expect(out.html).toContain('font-size:20px');
+    expect(out.html).toContain('font-weight:800');
+    // button transform/spacing applied to <a>
+    expect(out.html).toMatch(/<a[^>]*style="[^"]*letter-spacing:1px[^"]*text-transform:uppercase/);
+  });
 });

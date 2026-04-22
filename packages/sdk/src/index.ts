@@ -76,9 +76,26 @@ export type ExportRenderFn<TBlock extends Block> = (args: {
 
 export type InspectorControl =
   | { kind: 'text'; path: string; label: string; placeholder?: string; multiline?: boolean }
-  | { kind: 'number'; path: string; label: string; min?: number; max?: number; step?: number }
+  | {
+      kind: 'number';
+      path: string;
+      label: string;
+      min?: number;
+      max?: number;
+      step?: number;
+      /** When true, an empty input clears the value (patches `undefined`). */
+      nullable?: boolean;
+      placeholder?: string;
+    }
   | { kind: 'boolean'; path: string; label: string }
-  | { kind: 'select'; path: string; label: string; options: { value: string; label: string }[] }
+  | {
+      kind: 'select';
+      path: string;
+      label: string;
+      options: { value: string; label: string }[];
+      /** When true, the empty-string option (`value: ''`) patches `undefined`. */
+      nullable?: boolean;
+    }
   | { kind: 'color'; path: string; label: string; allowToken?: boolean }
   | { kind: 'tokenPicker'; path: string; label: string; tokenType: 'color' | 'spacing' | 'radius' }
   | { kind: 'spacing'; path: string; label: string }

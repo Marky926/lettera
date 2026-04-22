@@ -21,6 +21,7 @@ import {
   spacingToCss,
   styleAttr,
   tableWrap,
+  typographyOverridesCss,
 } from './helpers.js';
 
 type Heading = Extract<Block, { type: 'block.heading' }>;
@@ -32,6 +33,56 @@ type Divider = Extract<Block, { type: 'block.divider' }>;
 type Html = Extract<Block, { type: 'block.html' }>;
 type Repeater = Extract<Block, { type: 'block.repeater' }>;
 type Conditional = Extract<Block, { type: 'block.conditional' }>;
+
+// ---------------------------------------------------------------------------
+// Shared typography option lists — keep small + email-tested values so the
+// dropdowns are scannable. The empty-string option is the "auto / inherit
+// from preset" sentinel; the inspector clears the prop when it is selected.
+// ---------------------------------------------------------------------------
+
+const AUTO_OPT = { value: '', label: 'Auto (preset)' } as const;
+
+const FONT_SIZE_OPTS = [
+  AUTO_OPT,
+  ...[10, 12, 13, 14, 15, 16, 17, 18, 20, 22, 24, 28, 32, 36, 40, 48, 56, 64, 72].map((n) => ({
+    value: String(n),
+    label: `${n} px`,
+  })),
+];
+
+const LINE_HEIGHT_OPTS = [
+  AUTO_OPT,
+  ...[1, 1.1, 1.15, 1.2, 1.3, 1.4, 1.5, 1.6, 1.75, 2].map((n) => ({
+    value: String(n),
+    label: String(n),
+  })),
+];
+
+const LETTER_SPACING_OPTS = [
+  AUTO_OPT,
+  ...[-2, -1, -0.5, -0.25, 0, 0.25, 0.5, 1, 1.5, 2, 3, 4].map((n) => ({
+    value: String(n),
+    label: `${n > 0 ? '+' : ''}${n} px`,
+  })),
+];
+
+const TEXT_TRANSFORM_OPTS = [
+  AUTO_OPT,
+  { value: 'none', label: 'None' },
+  { value: 'uppercase', label: 'UPPERCASE' },
+  { value: 'lowercase', label: 'lowercase' },
+  { value: 'capitalize', label: 'Capitalize' },
+];
+
+const FONT_WEIGHT_OPTS = [
+  AUTO_OPT,
+  { value: '300', label: '300 — Light' },
+  { value: '400', label: '400 — Regular' },
+  { value: '500', label: '500 — Medium' },
+  { value: '600', label: '600 — Semibold' },
+  { value: '700', label: '700 — Bold' },
+  { value: '800', label: '800 — Extrabold' },
+];
 
 // ---------------------------------------------------------------------------
 // Heading
@@ -65,11 +116,40 @@ export const HeadingBlock = defineBlock<Heading>({
         label: s,
       })),
     },
+    {
+      kind: 'select',
+      path: 'props.fontSize',
+      label: 'Font size',
+      options: FONT_SIZE_OPTS,
+      nullable: true,
+    },
+    {
+      kind: 'select',
+      path: 'props.lineHeight',
+      label: 'Line height',
+      options: LINE_HEIGHT_OPTS,
+      nullable: true,
+    },
+    {
+      kind: 'select',
+      path: 'props.letterSpacing',
+      label: 'Letter spacing',
+      options: LETTER_SPACING_OPTS,
+      nullable: true,
+    },
+    {
+      kind: 'select',
+      path: 'props.textTransform',
+      label: 'Text transform',
+      options: TEXT_TRANSFORM_OPTS,
+      nullable: true,
+    },
   ]),
   exportRender: ({ node, ctx }) => {
     const tag = `h${node.props.level}` as const;
     const css = [
       semanticTextStyleCss(ctx, node.props.styleRef),
+      typographyOverridesCss(node.props),
       'margin:0',
       styleAttr(ctx, node.styles),
     ]
@@ -102,10 +182,39 @@ export const TextBlock = defineBlock<Text>({
         label: s,
       })),
     },
+    {
+      kind: 'select',
+      path: 'props.fontSize',
+      label: 'Font size',
+      options: FONT_SIZE_OPTS,
+      nullable: true,
+    },
+    {
+      kind: 'select',
+      path: 'props.lineHeight',
+      label: 'Line height',
+      options: LINE_HEIGHT_OPTS,
+      nullable: true,
+    },
+    {
+      kind: 'select',
+      path: 'props.letterSpacing',
+      label: 'Letter spacing',
+      options: LETTER_SPACING_OPTS,
+      nullable: true,
+    },
+    {
+      kind: 'select',
+      path: 'props.textTransform',
+      label: 'Text transform',
+      options: TEXT_TRANSFORM_OPTS,
+      nullable: true,
+    },
   ]),
   exportRender: ({ node, ctx }) => {
     const css = [
       semanticTextStyleCss(ctx, node.props.styleRef),
+      typographyOverridesCss(node.props),
       'margin:0',
       styleAttr(ctx, node.styles),
     ]
@@ -148,6 +257,41 @@ export const ButtonBlock = defineBlock<Button>({
       ],
     },
     { kind: 'boolean', path: 'props.fullWidth', label: 'Full width' },
+    {
+      kind: 'select',
+      path: 'props.fontSize',
+      label: 'Font size',
+      options: FONT_SIZE_OPTS,
+      nullable: true,
+    },
+    {
+      kind: 'select',
+      path: 'props.fontWeight',
+      label: 'Font weight',
+      options: FONT_WEIGHT_OPTS,
+      nullable: true,
+    },
+    {
+      kind: 'select',
+      path: 'props.lineHeight',
+      label: 'Line height',
+      options: LINE_HEIGHT_OPTS,
+      nullable: true,
+    },
+    {
+      kind: 'select',
+      path: 'props.letterSpacing',
+      label: 'Letter spacing',
+      options: LETTER_SPACING_OPTS,
+      nullable: true,
+    },
+    {
+      kind: 'select',
+      path: 'props.textTransform',
+      label: 'Text transform',
+      options: TEXT_TRANSFORM_OPTS,
+      nullable: true,
+    },
   ]),
   exportRender: ({ node, ctx }) => {
     const brand = ctx.theme.color.brand.primary;
@@ -168,6 +312,16 @@ export const ButtonBlock = defineBlock<Button>({
       .map((f) => (/\s/.test(f) ? `"${f}"` : f))
       .join(', ');
 
+    const fontSize = node.props.fontSize ?? 14;
+    const fontWeightVml = node.props.fontWeight ?? 'bold';
+    const fontWeightHtml = node.props.fontWeight ?? 600;
+    const overrides = typographyOverridesCss({
+      lineHeight: node.props.lineHeight,
+      letterSpacing: node.props.letterSpacing,
+      textTransform: node.props.textTransform,
+    });
+    const overridesSuffix = overrides ? `;${overrides}` : '';
+
     const href = safeUrl(node.props.href);
     const safeHref = ctx.escape(href);
     const safeLabel = ctx.escape(node.props.label);
@@ -183,7 +337,7 @@ export const ButtonBlock = defineBlock<Button>({
     const vml = `<!--[if mso]>
 <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${safeHref}" style="height:44px;v-text-anchor:middle;width:200px;" arcsize="${Math.round((radius / 22) * 100)}%" stroke="f" fillcolor="${bgColor}">
   <w:anchorlock/>
-  <center style="color:${color};font-family:${fontStack};font-size:14px;font-weight:bold;">${safeLabel}</center>
+  <center style="color:${color};font-family:${fontStack};font-size:${fontSize}px;font-weight:${fontWeightVml}${overridesSuffix};">${safeLabel}</center>
 </v:roundrect>
 <![endif]-->`;
 
@@ -191,7 +345,7 @@ export const ButtonBlock = defineBlock<Button>({
       ? 'display:block;width:100%;box-sizing:border-box;text-align:center;'
       : 'display:inline-block;';
     const html = `<!--[if !mso]><!-- -->
-<a data-lettera-btn href="${safeHref}" style="${widthStyle}background-color:${bgColor};color:${color};padding:${padding};border-radius:${radius}px;text-decoration:none;font-family:${fontStack};font-size:14px;font-weight:600;mso-hide:all;">${safeLabel}</a>
+<a data-lettera-btn href="${safeHref}" style="${widthStyle}background-color:${bgColor};color:${color};padding:${padding};border-radius:${radius}px;text-decoration:none;font-family:${fontStack};font-size:${fontSize}px;font-weight:${fontWeightHtml}${overridesSuffix};mso-hide:all;">${safeLabel}</a>
 <!--<![endif]-->`;
 
     const align = node.styles?.align ?? 'center';

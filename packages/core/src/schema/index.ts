@@ -111,12 +111,22 @@ export const HeadingProps = z.object({
   html: z.string(),
   /** Semantic style key (e.g. 'h1', 'h2', 'lead'). */
   styleRef: z.string().default('h1'),
+  /** Optional inline overrides — when set, take precedence over the preset. */
+  fontSize: z.number().positive().optional(),
+  lineHeight: z.number().positive().optional(),
+  letterSpacing: z.number().optional(),
+  textTransform: z.enum(['none', 'uppercase', 'lowercase', 'capitalize']).optional(),
 });
 
 export const TextProps = z.object({
   /** Inline HTML (sanitized at render time). */
   html: z.string(),
   styleRef: z.string().default('body'),
+  /** Optional inline overrides — when set, take precedence over the preset. */
+  fontSize: z.number().positive().optional(),
+  lineHeight: z.number().positive().optional(),
+  letterSpacing: z.number().optional(),
+  textTransform: z.enum(['none', 'uppercase', 'lowercase', 'capitalize']).optional(),
 });
 
 export const ButtonProps = z.object({
@@ -125,6 +135,12 @@ export const ButtonProps = z.object({
   /** Visual preset name; renderer maps to a default style if styles absent. */
   preset: z.enum(['primary', 'secondary', 'ghost']).default('primary'),
   fullWidth: z.boolean().default(false),
+  /** Optional typography overrides for the button label. */
+  fontSize: z.number().positive().optional(),
+  lineHeight: z.number().positive().optional(),
+  letterSpacing: z.number().optional(),
+  textTransform: z.enum(['none', 'uppercase', 'lowercase', 'capitalize']).optional(),
+  fontWeight: z.number().int().min(100).max(900).optional(),
 });
 
 export const ImageProps = z.object({
