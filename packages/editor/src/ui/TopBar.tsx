@@ -1,4 +1,5 @@
 import { useEditorStore } from '../store/editorStore.js';
+import { useBreadcrumbs } from './LetteraEditor.js';
 
 export function TopBar() {
   const canUndo = useEditorStore((s) => s.canUndo);
@@ -10,11 +11,18 @@ export function TopBar() {
   const doc = useEditorStore((s) => s.doc);
   const setCommandPaletteOpen = useEditorStore((s) => s.setCommandPaletteOpen);
   const setLayout = useEditorStore((s) => s.setLayout);
+  const breadcrumbs = useBreadcrumbs();
 
   return (
     <div className="lettera-editor__topbar">
-      <h1>Lettera</h1>
-      <span style={{ color: '#6b7280', fontSize: 12 }}>{doc.metadata.name ?? 'Untitled'}</span>
+      {breadcrumbs ? (
+        <div className="lettera-editor__breadcrumbs">{breadcrumbs}</div>
+      ) : (
+        <>
+          <h1>Lettera</h1>
+          <span style={{ color: '#6b7280', fontSize: 12 }}>{doc.metadata.name ?? 'Untitled'}</span>
+        </>
+      )}
       <div className="lettera-editor__spacer" />
       <button
         type="button"

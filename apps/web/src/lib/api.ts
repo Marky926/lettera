@@ -83,6 +83,17 @@ export interface DocumentSummary {
 export interface DocumentFull extends DocumentSummary {
   projectId: string;
   content: unknown;
+  /**
+   * Project + workspace context — populated by `GET /documents/:id` and the
+   * version-restore endpoint so the editor breadcrumb can render
+   * Workspace › Project › Document without an extra round-trip.
+   */
+  project?: {
+    id: string;
+    name: string;
+    workspaceId: string;
+    workspace: { id: string; name: string; slug: string };
+  };
 }
 
 export interface VersionEntry {

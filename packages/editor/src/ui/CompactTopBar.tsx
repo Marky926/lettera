@@ -5,6 +5,7 @@
  * palette (where Layers / Linter / other tools live).
  */
 import { useEditorStore } from '../store/editorStore.js';
+import { useBreadcrumbs } from './LetteraEditor.js';
 
 export function CompactTopBar() {
   const canUndo = useEditorStore((s) => s.canUndo);
@@ -16,10 +17,15 @@ export function CompactTopBar() {
   const doc = useEditorStore((s) => s.doc);
   const setCommandPaletteOpen = useEditorStore((s) => s.setCommandPaletteOpen);
   const setLayout = useEditorStore((s) => s.setLayout);
+  const breadcrumbs = useBreadcrumbs();
 
   return (
     <div className="lettera-editor__topbar lettera-editor__topbar--compact">
-      <h1>{doc.metadata.name ?? 'Untitled'}</h1>
+      {breadcrumbs ? (
+        <div className="lettera-editor__breadcrumbs">{breadcrumbs}</div>
+      ) : (
+        <h1>{doc.metadata.name ?? 'Untitled'}</h1>
+      )}
       <div className="lettera-editor__spacer" />
 
       <div className="lettera-compact-device" role="group" aria-label="Device preview">

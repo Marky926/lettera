@@ -39,6 +39,19 @@ export default function DocumentPage() {
   if (docQuery.isLoading) return <div className="lettera-shell">Loading…</div>;
   if (!docQuery.data || !initial) return <div className="lettera-shell">Document not found.</div>;
 
+  const project = docQuery.data.project;
+  const breadcrumbs = project ? (
+    <>
+      <Link href={`/workspaces/${project.workspace.id}`}>{project.workspace.name}</Link>
+      <span data-breadcrumb-separator>›</span>
+      <Link href={`/projects/${project.id}`}>{project.name}</Link>
+      <span data-breadcrumb-separator>›</span>
+      <span data-breadcrumb-current title={docQuery.data.name}>
+        {docQuery.data.name}
+      </span>
+    </>
+  ) : null;
+
   return (
     <div style={{ height: '100vh' }}>
       <LetteraEditor
@@ -51,10 +64,10 @@ export default function DocumentPage() {
         key={docId}
         document={initial}
         layout="compact"
+        breadcrumbs={breadcrumbs}
         versionsPanel={
           <DocPanel
             docId={docId}
-            projectId={docQuery.data.projectId}
             docName={docQuery.data.name}
             initialUpdatedAt={docQuery.data.updatedAt}
           />
@@ -71,12 +84,10 @@ export default function DocumentPage() {
  */
 function DocPanel({
   docId,
-  projectId,
   docName,
   initialUpdatedAt,
 }: {
   docId: string;
-  projectId: string;
   docName: string;
   initialUpdatedAt: string;
 }) {
@@ -157,10 +168,7 @@ function DocPanel({
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 12, fontSize: 13 }}>
       <div>
-        <p style={{ margin: 0, fontSize: 12, color: '#6b7280' }}>
-          <Link href={`/projects/${projectId}`}>← Back to project</Link>
-        </p>
-        <h2 style={{ margin: '8px 0 2px', fontSize: 15 }}>{docName}</h2>
+        <h2 style={{ margin: '0 0 2px', fontSize: 15 }}>{docName}</h2>
         <p style={{ margin: 0, fontSize: 11, color: '#9ca3af' }}>{status}</p>
       </div>
 

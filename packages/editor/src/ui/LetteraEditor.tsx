@@ -90,6 +90,14 @@ export interface LetteraEditorProps {
    */
   versionsPanel?: ReactNode;
   /**
+   * Optional breadcrumb slot rendered in the leading area of the topbar
+   * (where the document name normally sits). Typically a chain like
+   * Workspace › Project › Document. The host app supplies the actual
+   * elements so navigation links stay framework-aware (e.g. Next `<Link>`).
+   * When omitted, the topbar falls back to rendering `doc.metadata.name`.
+   */
+  breadcrumbs?: ReactNode;
+  /**
    * Visual shell to render. Defaults to `'classic'`. Both shells share the
    * same store + command bus.
    */
@@ -137,6 +145,16 @@ export function useVersionsPanel(): ReactNode | null {
 }
 
 /**
+ * Internal context exposing the host-supplied breadcrumb slot to the
+ * topbar components (classic + compact) without prop drilling.
+ */
+const BreadcrumbsContext = createContext<ReactNode | null>(null);
+
+export function useBreadcrumbs(): ReactNode | null {
+  return useContext(BreadcrumbsContext);
+}
+
+/**
  * Mounts the editor store, registers it as the default singleton (so the
  * `useEditorStore` re-export works for app code), and renders the requested
  * shell.
@@ -148,6 +166,7 @@ export function LetteraEditor({
   data,
   store,
   versionsPanel,
+  breadcrumbs,
   layout = 'classic',
   onDocumentChange,
   onSave,
@@ -211,18 +230,20 @@ export function LetteraEditor({
     <div className={className} role="application" aria-label="Lettera email editor">
       <EditorStoreContext.Provider value={created}>
         <VersionsPanelContext.Provider value={versionsPanel ?? null}>
-          {onDocumentChange ? <DocumentChangeBridge onChange={onDocumentChange} /> : null}
-          {onSave ? (
-            <PersistenceBridge
-              onSave={onSave}
-              autosaveDelay={autosaveDelay}
-              onSaveError={onSaveError}
-            />
-          ) : null}
-          <EditorDndProvider>
-            {liveLayout === 'compact' ? <CompactShell /> : <ClassicShell />}
-          </EditorDndProvider>
-          <CommandPalette />
+          <BreadcrumbsContext.Provider value={breadcrumbs ?? null}>
+            {onDocumentChange ? <DocumentChangeBridge onChange={onDocumentChange} /> : null}
+            {onSave ? (
+              <PersistenceBridge
+                onSave={onSave}
+                autosaveDelay={autosaveDelay}
+                onSaveError={onSaveError}
+              />
+            ) : null}
+            <EditorDndProvider>
+              {liveLayout === 'compact' ? <CompactShell /> : <ClassicShell />}
+            </EditorDndProvider>
+            <CommandPalette />
+          </BreadcrumbsContext.Provider>
         </VersionsPanelContext.Provider>
       </EditorStoreContext.Provider>
     </div>

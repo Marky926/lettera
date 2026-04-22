@@ -69,7 +69,19 @@ export default async function documentRoutes(app: FastifyInstance) {
     const { id } = req.params as { id: string };
     const access = await requireDocumentAccess(req, reply, id);
     if (!access) return;
-    return access.doc;
+    // Re-read with the relations the breadcrumb UI needs. The auth helper
+    // already loaded the doc + project for tenancy checks; this second
+    // query is cheap (PK lookup) and keeps the helper's surface narrow.
+    return prisma.document.findUnique({
+      where: { id },
+      include: {
+        project: {
+          include: {
+            workspace: { select: { id: true, name: true, slug: true } },
+          },
+        },
+      },
+    });
   });
 
   app.patch('/documents/:id', async (req, reply) => {
@@ -166,6 +178,13 @@ export default async function documentRoutes(app: FastifyInstance) {
       const u = await tx.document.update({
         where: { id },
         data: { content: v.content as object },
+        include: {
+          project: {
+            include: {
+              workspace: { select: { id: true, name: true, slug: true } },
+            },
+          },
+        },
       });
       await tx.documentVersion.create({
         data: {
