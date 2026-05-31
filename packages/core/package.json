@@ -2,6 +2,29 @@
   "name": "@lettera/core",
   "version": "0.0.1",
   "type": "module",
+  "description": "Core document model, schema, tokens, and commands for the Lettera email builder.",
+  "license": "MIT",
+  "author": "Marek Jelsik <marekjelsik@lignos.sk>",
+  "homepage": "https://github.com/Marky926/lettera/tree/main/packages/core#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marky926/lettera.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/Marky926/lettera/issues"
+  },
+  "keywords": [
+    "email",
+    "email-builder",
+    "lettera",
+    "document",
+    "schema"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

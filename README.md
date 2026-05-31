@@ -105,5 +105,6 @@ Node 20.12+ and pnpm 10+ required.
 
 ## License
 
-Proprietary — all rights reserved (pre-release).
+[MIT](LICENSE) © Marek Jelsik
+
 

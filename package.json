@@ -18,6 +18,9 @@
     "check": "biome check --write",
     "ci": "turbo run lint typecheck test build",
     "clean": "turbo run clean && rimraf node_modules",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "release": "turbo run build --filter=./packages/* && changeset publish",
     "prepare": "simple-git-hooks || true",
     "render:sample": "pnpm --filter @lettera/cli render -- --in fixtures/welcome.json --out fixtures/welcome.html"
   },
@@ -31,6 +34,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.12",
+    "@changesets/cli": "^2.31.0",
     "lint-staged": "^15.5.2",
     "rimraf": "^6.0.1",
     "simple-git-hooks": "^2.13.1",

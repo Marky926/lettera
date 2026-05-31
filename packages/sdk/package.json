@@ -2,6 +2,29 @@
   "name": "@lettera/sdk",
   "version": "0.0.1",
   "type": "module",
+  "description": "SDK for authoring custom blocks and extending the Lettera email builder.",
+  "license": "MIT",
+  "author": "Marek Jelsik <marekjelsik@lignos.sk>",
+  "homepage": "https://github.com/Marky926/lettera/tree/main/packages/sdk#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marky926/lettera.git",
+    "directory": "packages/sdk"
+  },
+  "bugs": {
+    "url": "https://github.com/Marky926/lettera/issues"
+  },
+  "keywords": [
+    "email",
+    "email-builder",
+    "lettera",
+    "sdk",
+    "blocks"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
