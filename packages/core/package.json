@@ -1,6 +1,6 @@
 {
   "name": "@lettera/core",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
   "description": "Core document model, schema, tokens, and commands for the Lettera email builder.",
   "license": "MIT",
