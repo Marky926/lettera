@@ -2,6 +2,30 @@
   "name": "@lettera/editor",
   "version": "0.0.1",
   "type": "module",
+  "description": "React-based drag-and-drop visual editor for the Lettera email builder.",
+  "license": "MIT",
+  "author": "Marek Jelsik <marekjelsik@lignos.sk>",
+  "homepage": "https://github.com/Marky926/lettera/tree/main/packages/editor#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marky926/lettera.git",
+    "directory": "packages/editor"
+  },
+  "bugs": {
+    "url": "https://github.com/Marky926/lettera/issues"
+  },
+  "keywords": [
+    "email",
+    "email-builder",
+    "lettera",
+    "editor",
+    "react",
+    "tiptap"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

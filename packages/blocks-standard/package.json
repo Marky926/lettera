@@ -2,6 +2,29 @@
   "name": "@lettera/blocks-standard",
   "version": "0.0.1",
   "type": "module",
+  "description": "Standard block library (text, image, button, layout, and more) for the Lettera email builder.",
+  "license": "MIT",
+  "author": "Marek Jelsik <marekjelsik@lignos.sk>",
+  "homepage": "https://github.com/Marky926/lettera/tree/main/packages/blocks-standard#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marky926/lettera.git",
+    "directory": "packages/blocks-standard"
+  },
+  "bugs": {
+    "url": "https://github.com/Marky926/lettera/issues"
+  },
+  "keywords": [
+    "email",
+    "email-builder",
+    "lettera",
+    "blocks",
+    "components"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

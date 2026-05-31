@@ -2,6 +2,29 @@
   "name": "@lettera/renderer",
   "version": "0.0.1",
   "type": "module",
+  "description": "Server-safe HTML renderer that turns Lettera documents into email-ready markup.",
+  "license": "MIT",
+  "author": "Marek Jelsik <marekjelsik@lignos.sk>",
+  "homepage": "https://github.com/Marky926/lettera/tree/main/packages/renderer#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marky926/lettera.git",
+    "directory": "packages/renderer"
+  },
+  "bugs": {
+    "url": "https://github.com/Marky926/lettera/issues"
+  },
+  "keywords": [
+    "email",
+    "email-builder",
+    "lettera",
+    "render",
+    "html"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",

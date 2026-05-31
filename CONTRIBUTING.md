@@ -51,8 +51,39 @@ BREAKING CHANGE: `variables` prop is deprecated, use `schema`.
 2. Run `pnpm ci` locally before pushing.
 3. Add or update tests for any behaviour change.
 4. Update relevant docs under `docs/` and the package README.
-5. Add a `CHANGELOG.md` entry under `## [Unreleased]`.
+5. Add a changeset with `pnpm changeset` for any user-facing change to a
+   published `@lettera/*` package (select the packages and semver bump).
 6. Open a PR against `develop` using the PR template.
+
+## Releasing & publishing
+
+The `@lettera/*` packages under `packages/` are published to npm with
+[Changesets](https://github.com/changesets/changesets). The `apps/*` packages
+are private and never published.
+
+Flow:
+
+1. Each user-facing change ships with a changeset file (`pnpm changeset`).
+2. When changes land on `main`, the `Release` workflow
+   ([.github/workflows/release.yml](.github/workflows/release.yml)) opens a
+   "Version Packages" PR that applies the bumps and updates each package
+   `CHANGELOG.md`.
+3. Merging that PR publishes the affected packages to npm with provenance.
+
+`workspace:*` dependencies are rewritten to the published version ranges
+automatically during `changeset publish`.
+
+To run the steps locally:
+
+```bash
+pnpm changeset          # record intent to release
+pnpm version-packages   # apply changesets, bump versions, update changelogs
+pnpm release            # build packages and publish to npm
+```
+
+Publishing requires an npm token with publish access to the `@lettera`
+scope, stored as the `NPM_TOKEN` repository secret for CI.
+
 
 ## Code style
 
