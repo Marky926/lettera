@@ -1,6 +1,6 @@
 {
   "name": "@lettera/renderer",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "type": "module",
   "description": "Server-safe HTML renderer that turns Lettera documents into email-ready markup.",
   "license": "MIT",
